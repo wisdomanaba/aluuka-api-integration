@@ -1,1 +1,6 @@
-alert("Hi Wian man!!")
+$(document).ready(function(){
+
+  alert("Hi Wian man!!")
+  alert("Hi Wian man!! Chill")
+  
+})
