@@ -1,4 +1,3 @@
-{/* <script type="application/javascript"> */}
 $(document).ready(function(){
 
     function getUrlVars(){
@@ -120,5 +119,3 @@ $(document).ready(function(){
     })
     
 })
-
-// </script>
