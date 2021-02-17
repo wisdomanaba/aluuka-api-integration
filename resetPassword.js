@@ -1,5 +1,7 @@
 $(document).ready(function(){
 
+	var errorMessage = $('.error-message')
+
     function getUrlVars(){
         var vars = [], hash;
         var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -18,12 +20,12 @@ $(document).ready(function(){
 
         const reset_password = $(".reset_password").val()
         const reset_confirm_password = $(".reset_confirm_password").val()
-        const reset_token = ""
+        const reset_token = token
 
         $(".reset_password_btn").html("Please wait...")
 
         if (reset_token === "") {   
-            $(".reset_password_btn").html("Please wait...")
+            $(".reset_password_btn").html("Reset Password")
             errorMessage.css("display", "block")
             errorMessage.css("background", "#c62828")
             errorMessage.html("Session expired, pls try again....")
@@ -38,10 +40,10 @@ $(document).ready(function(){
         } 
 
         if (reset_password === "" || reset_confirm_password === "") {   
-            $(".reset_password_btn").html("Please wait...")
+            $(".reset_password_btn").html("Reset Password")
             errorMessage.css("display", "block")
             errorMessage.css("background", "#c62828")
-            errorMessage.html("Pls fill in all field....")
+            errorMessage.html("Pls fill in all fields....")
             errorMessage.animate({ top: "30px" }, 900, "linear", function() {
               console.log("All is cool")
             })
@@ -53,7 +55,7 @@ $(document).ready(function(){
         } 
 
         if (reset_password !== reset_confirm_password) {   
-            $(".reset_password_btn").html("Please wait...")
+            $(".reset_password_btn").html("Reset Password")
             errorMessage.css("display", "block")
             errorMessage.css("background", "#c62828")
             errorMessage.html("Password does not match....")
