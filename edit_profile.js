@@ -15,7 +15,11 @@ var firstName = userfullname.replace(/ .*/, '')
 $(".firstname").html(`Welcome, ${firstName}`)
 $(".userfullname").html(`${userfullname}`)
 
-
+if(userData.pictureURL) {
+        $(".prof-img").attr("src", userData.pictureURL)
+	$(".edit-prof-image").attr("src", userData.pictureURL)
+}
+	
 $(".sign-out").click(function(){
 	localStorage.clear()
 	var loc = `${$(location).attr('origin')}/care-giver/login`
