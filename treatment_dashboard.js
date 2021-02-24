@@ -272,7 +272,7 @@ $(document).ready(function(){
                                     <div class="treatments-dashboard-table-row-5-label">$${nfee}</div>
                                 </div>
                                 <div id="w-node-f6533b15-1108-ca7c-8368-91a6c7143572-f6900c70" class="treatments-dashboard-table-row-3-block-6">
-                                    <a href="#" class="treatments-dashboard-table-row-3-button w-button">PENDING</a>
+                                    <a href="#" class="treatments-dashboard-table-row-4-button w-button">PENDING</a>
                                 </div>
                             </div>`
               
