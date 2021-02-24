@@ -23,6 +23,9 @@ $(document).ready(function(){
     $(".firstname").html(`Welcome, ${firstName}`)
     $(".userfullname").html(`${userfullname}`)
     
+    if(userData.pictureURL) {
+        $(".prof-img").attr("src", userData.pictureURL)
+    }
     
     $(".sign-out").click(function(){
         localStorage.clear()
