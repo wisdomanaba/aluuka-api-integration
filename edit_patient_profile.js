@@ -18,12 +18,12 @@ const userfullname = userData.fullName
 $(".userfullname").html(`${userfullname}`)
 
 
-$.get("https://restcountries.eu/rest/v2/all").done(function (data) {
+/* $.get("https://restcountries.eu/rest/v2/all").done(function (data) {
    data.map( function (i) { 
    		$('.country-field').append(`<option value="${i.name}"> ${i.name} </option>`)
    })
    $(`select.country-field option:contains("${userData.country}")`).attr('selected', true)
-})
+}) */
 
 
 function getUrlVars(){
@@ -87,6 +87,12 @@ $.ajax({
             $(".edit_patient_profile_gender").val(patient_data.gender)
             $(".edit_patient_profile_address").val(patient_data.address)
             $(`select.edit_patient_profile_country option:contains("${userData.gender}")`).attr('selected', true)
+		$.get("https://restcountries.eu/rest/v2/all").done(function (data) {
+		   data.map( function (i) { 
+				$('.country-field').append(`<option value="${i.name}"> ${i.name} </option>`)
+		   })
+		   $(`select.country-field option:contains("${patient_data.country}")`).attr('selected', true)
+		})
             
             console.log(patient_data)
         },
