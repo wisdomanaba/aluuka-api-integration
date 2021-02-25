@@ -195,7 +195,6 @@ $(".onboard-comp-submit").click(function(event){
     const phone = $(".onboarding_complete_phone").val()
     const email = $(".onboarding_complete_email").val()
     $(".onboard-comp-submit").text("Please wait....")
-    $(".onboard-comp-submit").value("Please wait....")
     
     console.log("main trial", notf)
     
