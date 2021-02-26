@@ -69,7 +69,10 @@ const updateFields = (image_url) => {
                     $(location).reload(true)
                 }
             },
-            error: function(err) { console.log("err:",err) }
+            error: function(err) { 
+                console.log("err:",err) 
+                $(".image-label").text("Replace Image")
+            }
         })
 
     
@@ -171,7 +174,22 @@ $(".onboard-comp-submit").click(function(event){
         $(".onboard-comp-submit").val("Next: Patient Information")
         errorMessage.css("display", "block")
         errorMessage.css("background", "#c62828")
-        errorMessage.html("Pls fill in all field....")
+        errorMessage.html("Pls fill in all field...")
+        errorMessage.animate({ top: "30px" }, 900, "linear", function() {
+          console.log("All is cool")
+        })
+        errorMessage.animate({ top: "50px" }, 900, "linear", function() {
+          console.log("All is cool")
+        })
+        setTimeout(function(){  errorMessage.css("display", "none") }, 2000)
+        return false;
+    }
+
+    if(!notf.length) {
+        $(".onboard-comp-submit").val("Next: Patient Information")
+        errorMessage.css("display", "block")
+        errorMessage.css("background", "#c62828")
+        errorMessage.html("Select notification method...")
         errorMessage.animate({ top: "30px" }, 900, "linear", function() {
           console.log("All is cool")
         })
@@ -198,11 +216,11 @@ $(".onboard-comp-submit").click(function(event){
                                               country: "${country}"
                                               address: "${address}"
                                               phone: "${phone}"
-                                              email: "${email}"
+                                              email: "${userData.email}"
                                               notificationChannel: $notificationChannel
                                           ) { 
                                                   success message returnStatus data token
-                                              }
+                                            }
                                       }`,
                                       variables: {
                                         "notificationChannel": notf
@@ -210,28 +228,31 @@ $(".onboard-comp-submit").click(function(event){
           }),
           success: function(result) {
               if(!result.data.onboardingCompleteProfile.success) {
-                  $(".onboard-comp-submit").val("Next: Patient Information")
-                  errorMessage.css("display", "block")
-                  errorMessage.css("background", "#c62828")
-                  errorMessage.html(result.data.onboardingCompleteProfile.message)
-                  errorMessage.animate({ top: "30px" }, 900, "linear", function() { console.log("All is cool") })
-                  errorMessage.animate({ top: "50px" }, 900, "linear", function() { console.log("All is cool") })
-                  setTimeout(function(){  errorMessage.css("display", "none") }, 2000)
+                    $(".onboard-comp-submit").val("Next: Patient Information")
+                    errorMessage.css("display", "block")
+                    errorMessage.css("background", "#c62828")
+                    errorMessage.html(result.data.onboardingCompleteProfile.message)
+                    errorMessage.animate({ top: "30px" }, 900, "linear", function() { console.log("All is cool") })
+                    errorMessage.animate({ top: "50px" }, 900, "linear", function() { console.log("All is cool") })
+                    setTimeout(function(){  errorMessage.css("display", "none") }, 2000)
               } else {
-                $(".onboard-comp-submit").val("Next: Patient Information")
-                  errorMessage.css("display", "block")
-                  errorMessage.css("background", "#43a047")
-                  errorMessage.html(result.data.onboardingCompleteProfile.message)
-                  errorMessage.animate({ top: "30px" }, 900, "linear", function() { console.log("All is cool") })
-                  errorMessage.animate({ top: "50px" }, 900, "linear", function() { console.log("All is cool")  })
-                  setTimeout(function(){  errorMessage.css("display", "none") }, 2000)
-                  localStorage.setItem('data', JSON.stringify(result.data.onboardingCompleteProfile.data))
-                  var loc = `${$(location).attr('origin')}/care-giver/patient-profile-3`
-                  $(location).attr('href',loc)
+                    $(".onboard-comp-submit").val("Next: Patient Information")
+                    errorMessage.css("display", "block")
+                    errorMessage.css("background", "#43a047")
+                    errorMessage.html(result.data.onboardingCompleteProfile.message)
+                    errorMessage.animate({ top: "30px" }, 900, "linear", function() { console.log("All is cool") })
+                    errorMessage.animate({ top: "50px" }, 900, "linear", function() { console.log("All is cool")  })
+                    setTimeout(function(){  errorMessage.css("display", "none") }, 2000)
+                    localStorage.setItem('data', JSON.stringify(result.data.onboardingCompleteProfile.data))
+                    var loc = `${$(location).attr('origin')}/care-giver/patient-profile-3`
+                    $(location).attr('href',loc)
                 }
                 console.log(JSON.stringify(result.data))
           },
-          error: function(err) {  console.log(err)  } 
+          error: function(err) { 
+              console.log(err)
+              $(".onboard-comp-submit").val("Next: Patient Information")
+        } 
       })
    	
 })
