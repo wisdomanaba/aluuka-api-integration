@@ -129,6 +129,9 @@ if(userData.notificationChannel.includes("phone")) {
 	$('#notfphone').attr('checked', true)
 }
 
+$(".create_patient_dob").click(function(){
+    $(this).prop('type', 'date');
+})
 // Edit Profile
 $(".onboard-comp-submit").click(function(event){
 	event.preventDefault()
@@ -140,6 +143,9 @@ $(".onboard-comp-submit").click(function(event){
     const phone = $(".onboarding_complete_phone").val()
     const email = $(".onboarding_complete_email").val()
     var notf = []
+
+    
+
     if($("#notfemail").prop('checked')) {
     	console.log("Yeah, you check email")
         notf.push("email")

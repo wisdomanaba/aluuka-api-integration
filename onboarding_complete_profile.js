@@ -144,11 +144,16 @@ $("#notfphone").click(function(event){
 })
 
 
+$(".onboarding_complete_fullname").attr('disabled','disabled')
+$(".onboarding_complete_fullname").val('disabled')
+
+$(".onboarding_complete_dob").click(function(){
+    $(this).prop('type', 'date');
+})
 // Complete Profile
 $(".onboard-comp-submit").click(function(event){
 	event.preventDefault()
 
-	const fullName = $(".onboarding_complete_fullname").val()
     const dob = $(".onboarding_complete_dob").val()
     const gender = $("select.onboarding_complete_gender option").filter(":selected").val()
     const country = $("select.onboarding_complete_country option").filter(":selected").val()
@@ -160,7 +165,7 @@ $(".onboard-comp-submit").click(function(event){
     
     console.log("main trial", notf)
     
-    if (fullName === "" || dob === "" || gender === "" || country === "" || address === "" || phone === "" || email === "") {   
+    if (dob === "" || gender === "" || country === "" || address === "" || phone === "" || email === "") {   
         $(".onboard-comp-submit").val("Next: Patient Information")
         errorMessage.css("display", "block")
         errorMessage.css("background", "#c62828")
@@ -177,7 +182,7 @@ $(".onboard-comp-submit").click(function(event){
    
    	const valid_date = new Date(dob)
    
-   	console.log(fullName,valid_date,gender,country,address,phone,email, notf)
+   	console.log(valid_date,gender,country,address,phone,email, notf)
    	console.log("loading....")
     
      $.ajax({url: "https://aluuka-backend.herokuapp.com",
@@ -185,7 +190,7 @@ $(".onboard-comp-submit").click(function(event){
           headers: { 'authorization': `Bearer ${JSON.parse(token)}` },
           data: JSON.stringify({ query: `mutation ($notificationChannel: [NotificationChannel]!){
                                           onboardingCompleteProfile(
-                                              fullName: "${fullName}"
+                                              fullName: "${userData.fullName}"
                                               dob: "${valid_date}"
                                               gender: "${gender}"
                                               country: "${country}"
