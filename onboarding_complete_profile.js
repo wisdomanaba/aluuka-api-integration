@@ -145,11 +145,9 @@ $("#notfphone").click(function(event){
 
 
 $(".onboarding_complete_fullname").attr('disabled','disabled')
-$(".onboarding_complete_fullname").val('disabled')
+$(".onboarding_complete_fullname").val(userData.fullName)
 
-$(".onboarding_complete_dob").click(function(){
-    $(this).prop('type', 'date');
-})
+$(".onboarding_complete_dob").attr("type","date")
 // Complete Profile
 $(".onboard-comp-submit").click(function(event){
 	event.preventDefault()
