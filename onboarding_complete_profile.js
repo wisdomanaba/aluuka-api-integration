@@ -20,6 +20,10 @@ $.get("https://restcountries.eu/rest/v2/all").done(function (data) {
 
 const updateFields = (image_url) => {
 
+        var dob_ = new Date()
+
+        console.log("Fake date", dob_)
+
         $.ajax({url: "https://aluuka-backend.herokuapp.com",
             contentType: "application/json",
             type:'POST',
@@ -28,7 +32,7 @@ const updateFields = (image_url) => {
                                             onboardingCompleteProfile(
                                                 fullName: "${userData.fullName ? userData.fullName : ""}"
                                                 pictureURL: "${image_url}"
-                                                dob: "${userData.dob ? userData.dob : new Date()}"
+                                                dob: "${userData.dob ? userData.dob : dob_}"
                                                 gender: "${userData.gender ? userData.gender : ""}"
                                                 country: "${userData.country ? userData.country : ""}"
                                                 address: "${userData.address ? userData.address : ""}"
