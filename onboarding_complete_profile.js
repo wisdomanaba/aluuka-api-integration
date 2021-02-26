@@ -33,7 +33,7 @@ const updateFields = (image_url) => {
                                                 fullName: "${userData.fullName ? userData.fullName : ""}"
                                                 pictureURL: "${image_url}"
                                                 dob: "${userData.dob ? userData.dob : dob_}"
-                                                gender: "${userData.gender ? userData.gender : ""}"
+                                                gender: "${userData.gender ? userData.gender : "male"}"
                                                 country: "${userData.country ? userData.country : ""}"
                                                 address: "${userData.address ? userData.address : ""}"
                                                 phone: "${userData.phone ? userData.phone : ""}"
