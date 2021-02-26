@@ -17,7 +17,7 @@ $(".userfullname").html(`${userfullname}`)
 
 if(userData.pictureURL) {
         $(".prof-img").attr("src", userData.pictureURL)
-	$(".edit-prof-image").attr("src", userData.pictureURL)
+	    $(".edit-prof-image").attr("src", userData.pictureURL)
 }
 	
 $(".sign-out").click(function(){
@@ -40,13 +40,21 @@ const updateFields = (image_url) => {
         headers: { 'authorization': `Bearer ${JSON.parse(token)}` },
         data: JSON.stringify({ query: `mutation ($notf: [NotificationChannel]!){ 
                                         onboardingCompleteProfile(
-                                            fullName: "${userData.fullName}" pictureURL: "${image_url}" dob: "${userData.dob}" gender: "${userData.gender}" country: "${userData.country}" address: "${userData.address}" phone: "${userData.phone}" email: "${userData.email}" notificationChannel: $notf
+                                            fullName: "${userData.fullName ? userData.fullName : ""}"
+                                            pictureURL: "${image_url}"
+                                            dob: "${userData.dob ? userData.dob : new Date()}"
+                                            gender: "${userData.gender ? userData.gender : ""}"
+                                            country: "${userData.country ? userData.country : ""}"
+                                            address: "${userData.address ? userData.address : ""}"
+                                            phone: "${userData.phone ? userData.phone : ""}"
+                                            email: "${userData.email ? userData.email : ""}"
+                                            notificationChannel: $notf
                                         ) { 
                                             success message returnStatus data
                                         }
                                     }`,
                                     variables: {
-                                        "notf": userData.notificationChannel
+                                        "notf": userData.notificationChannel ? userData.notificationChannel : []
                                     }
     }),
         success: function(result) {
@@ -57,7 +65,7 @@ const updateFields = (image_url) => {
                 errorMessage.animate({ top: "30px" }, 900, "linear", function() { console.log("All is cool") })
                 errorMessage.animate({ top: "50px" }, 900, "linear", function() { console.log("All is cool") })
                 setTimeout(function(){  errorMessage.css("display", "none") }, 2000)
-                $("mpe-button-replace-image").html("Replace Image")
+                $("mpe-button-replace-image").text("Replace Image")
                 return false;
             } else {
                 errorMessage.css("display", "block")
@@ -67,7 +75,8 @@ const updateFields = (image_url) => {
                 errorMessage.animate({ top: "50px" }, 900, "linear", function() { console.log("All is cool") })
                 setTimeout(function(){  errorMessage.css("display", "none") }, 2000)
                 localStorage.setItem('data', JSON.stringify(result.data.onboardingCompleteProfile.data))
-                $("mpe-button-replace-image").html("Plesae wait..")
+                $("mpe-button-replace-image").text("Replace Image")
+                $(location).reload(true)
             }
         },
         error: function(err) { console.log("err:",err) }
@@ -86,7 +95,7 @@ $('#change_img').change(function(e) {
         return false
     }
     console.log("Files name", fileName)
-    $("mpe-button-replace-image").html("Plesae wait..")
+    $("mpe-button-replace-image").text("Please wait..")
     const data = new FormData()
     data.append("file",fileName)
     data.append("upload_preset","s0qhad82")
@@ -100,7 +109,7 @@ $('#change_img').change(function(e) {
     })
     .catch(err=>{
         console.log("Upload error", err)
-        $("mpe-button-replace-image").html("Replace Image")
+        $("mpe-button-replace-image").text("Replace Image")
     })
 
 })

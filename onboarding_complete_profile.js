@@ -20,20 +20,27 @@ $.get("https://restcountries.eu/rest/v2/all").done(function (data) {
 
 const updateFields = (image_url) => {
 
-    if(!userData) {
-
         $.ajax({url: "https://aluuka-backend.herokuapp.com",
-            contentType: "application/json",type:'POST',
+            contentType: "application/json",
+            type:'POST',
             headers: { 'authorization': `Bearer ${JSON.parse(token)}` },
             data: JSON.stringify({ query: `mutation ($notf: [NotificationChannel]!){ 
                                             onboardingCompleteProfile(
-                                                fullName:" " pictureURL:"${image_url}" dob:" " gender:" " country:" " address:" " phone:" " email:" " notificationChannel: $notf
+                                                fullName: "${userData.fullName ? userData.fullName : ""}"
+                                                pictureURL: "${image_url}"
+                                                dob: "${userData.dob ? userData.dob : new Date()}"
+                                                gender: "${userData.gender ? userData.gender : ""}"
+                                                country: "${userData.country ? userData.country : ""}"
+                                                address: "${userData.address ? userData.address : ""}"
+                                                phone: "${userData.phone ? userData.phone : ""}"
+                                                email: "${userData.email ? userData.email : ""}"
+                                                notificationChannel: $notf
                                             ) { 
                                                 success message returnStatus data
                                             }
                                         }`,
                                         variables: {
-                                            "notf": []
+                                            "notf": userData.notificationChannel ? userData.notificationChannel : []
                                         }
         }),
             success: function(result) {
@@ -44,9 +51,7 @@ const updateFields = (image_url) => {
                     errorMessage.animate({ top: "30px" }, 900, "linear", function() { console.log("All is cool") })
                     errorMessage.animate({ top: "50px" }, 900, "linear", function() { console.log("All is cool") })
                     setTimeout(function(){  errorMessage.css("display", "none") }, 2000)
-                    $(".image-label").html("Replace Image")
                     $(".image-label").text("Replace Image")
-                    $(".image-label").value("Replace Image")
                     return false;
                 } else {
                     errorMessage.css("display", "block")
@@ -56,55 +61,14 @@ const updateFields = (image_url) => {
                     errorMessage.animate({ top: "50px" }, 900, "linear", function() { console.log("All is cool") })
                     setTimeout(function(){  errorMessage.css("display", "none") }, 2000)
                     localStorage.setItem('data', JSON.stringify(result.data.onboardingCompleteProfile.data))
-                    $(".image-label").html("Replace Image")
                     $(".image-label").text("Replace Image")
-                    $(".image-label").value("Replace Image")
+                    $(location).reload(true)
                 }
             },
             error: function(err) { console.log("err:",err) }
         })
 
-    }
-
-    $.ajax({url: "https://aluuka-backend.herokuapp.com",
-        contentType: "application/json",type:'POST',
-        headers: { 'authorization': `Bearer ${JSON.parse(token)}` },
-        data: JSON.stringify({ query: `mutation ($notf: [NotificationChannel]!){ 
-                                        onboardingCompleteProfile(
-                                            fullName: "${userData.fullName}" pictureURL: "${image_url}" dob: "${userData.dob}" gender: "${userData.gender}" country: "${userData.country}" address: "${userData.address}" phone: "${userData.phone}" email: "${userData.email}" notificationChannel: $notf
-                                        ) { 
-                                            success message returnStatus data
-                                        }
-                                    }`,
-                                    variables: {
-                                        "notf": userData.notificationChannel
-                                    }
-    }),
-        success: function(result) {
-            if(!result.data.onboardingCompleteProfile.success) {
-                errorMessage.css("display", "block")
-                errorMessage.css("background", "#c62828")
-                errorMessage.html(result.data.onboardingCompleteProfile.message)
-                errorMessage.animate({ top: "30px" }, 900, "linear", function() { console.log("All is cool") })
-                errorMessage.animate({ top: "50px" }, 900, "linear", function() { console.log("All is cool") })
-                setTimeout(function(){  errorMessage.css("display", "none") }, 2000)
-                $("mpe-button-replace-image").html("Replace Image")
-                return false;
-            } else {
-                errorMessage.css("display", "block")
-                errorMessage.css("background", "#43a047")
-                errorMessage.html(result.data.onboardingCompleteProfile.message)
-                errorMessage.animate({ top: "30px" }, 900, "linear", function() { console.log("All is cool") })
-                errorMessage.animate({ top: "50px" }, 900, "linear", function() { console.log("All is cool") })
-                setTimeout(function(){  errorMessage.css("display", "none") }, 2000)
-                localStorage.setItem('data', JSON.stringify(result.data.onboardingCompleteProfile.data))
-                $(".image-label").html("Replace Image")
-                $(".image-label").text("Replace Image")
-                $(".image-label").value("Replace Image")
-            }
-        },
-        error: function(err) { console.log("err:",err) }
-    })
+    
 
 }
 
@@ -119,9 +83,7 @@ $('#change_img').change(function(e) {
         return false
     }
     console.log("Files name", fileName)
-    $(".image-label").html("Plesae wait..")
     $(".image-label").text("Please wait....")
-    $(".image-label").value("Please wait....")
     const data = new FormData()
     data.append("file",fileName)
     data.append("upload_preset","s0qhad82")
@@ -135,9 +97,7 @@ $('#change_img').change(function(e) {
     })
     .catch(err=>{
         console.log("Upload error", err)
-        $(".image-label").html("Replace Image")
         $(".image-label").text("Replace Image")
-        $(".image-label").value("Replace Image")
     })
 
     
@@ -187,6 +147,7 @@ $("#notfphone").click(function(event){
 // Complete Profile
 $(".onboard-comp-submit").click(function(event){
 	event.preventDefault()
+
 	const fullName = $(".onboarding_complete_fullname").val()
     const dob = $(".onboarding_complete_dob").val()
     const gender = $("select.onboarding_complete_gender option").filter(":selected").val()
@@ -194,12 +155,13 @@ $(".onboard-comp-submit").click(function(event){
     const address = $(".onboarding_complete_address").val()
     const phone = $(".onboarding_complete_phone").val()
     const email = $(".onboarding_complete_email").val()
-    $(".onboard-comp-submit").text("Please wait....")
+
+    $(".onboard-comp-submit").val("Please wait....")
     
     console.log("main trial", notf)
     
     if (fullName === "" || dob === "" || gender === "" || country === "" || address === "" || phone === "" || email === "") {   
-        $(".onboard-comp-submit").text("Next: Patient Information")
+        $(".onboard-comp-submit").val("Next: Patient Information")
         errorMessage.css("display", "block")
         errorMessage.css("background", "#c62828")
         errorMessage.html("Pls fill in all field....")
@@ -241,7 +203,7 @@ $(".onboard-comp-submit").click(function(event){
           }),
           success: function(result) {
               if(!result.data.onboardingCompleteProfile.success) {
-                  $(".onboard-comp-submit").text("Next: Patient Information")
+                  $(".onboard-comp-submit").val("Next: Patient Information")
                   errorMessage.css("display", "block")
                   errorMessage.css("background", "#c62828")
                   errorMessage.html(result.data.onboardingCompleteProfile.message)
@@ -249,7 +211,7 @@ $(".onboard-comp-submit").click(function(event){
                   errorMessage.animate({ top: "50px" }, 900, "linear", function() { console.log("All is cool") })
                   setTimeout(function(){  errorMessage.css("display", "none") }, 2000)
               } else {
-                $(".onboard-comp-submit").text("Next: Patient Information")
+                $(".onboard-comp-submit").val("Next: Patient Information")
                   errorMessage.css("display", "block")
                   errorMessage.css("background", "#43a047")
                   errorMessage.html(result.data.onboardingCompleteProfile.message)
