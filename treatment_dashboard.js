@@ -1,10 +1,9 @@
 $(document).ready(function(){
 
     const token = localStorage.getItem("token")
-    
     const userData = JSON.parse(localStorage.getItem("data"))
     
-    var treatment_list = "One"
+    var treatment_list;
     
     if(!userData) {
         var loc = `${$(location).attr('origin')}/care-giver/login`
@@ -32,6 +31,56 @@ $(document).ready(function(){
         var loc = `${$(location).attr('origin')}/care-giver/login`
         $(location).attr('href',loc)
     })
+
+
+    // List patients for filter
+
+    $.ajax({
+        url: "https://aluuka-backend.herokuapp.com",
+        contentType: "application/json",
+        type:'POST',
+        headers: { 'authorization': `Bearer ${JSON.parse(token)}` },
+        data: JSON.stringify({ query: `query {
+                                    listPatients(
+                                    lastId: ""
+                                    limit: 100
+                                    ) {
+                                    data {
+                                        id
+                                        fullName
+                                        gender
+                                        country
+                                        address
+                                        phone
+                                        email
+                                        dob
+                                    }
+                                    }
+                                }
+                                `
+        }),
+        success: function(result) {
+
+            const patient_list = result.data.listPatients.data
+
+            if(Array.isArray(patient_list) && !patient_list.length) {
+                $(".patient-name-filter").append(`<a href="/care-giver/add-patient-profile" class="dropdown-link-3 w-dropdown-link" tabindex="0">Add Patient</a>`)
+                return false;
+            }
+
+            $(".patient-name-filter").append(
+                $.map( patient_list, function( data ) { return `<a href="/care-giver/treatments-main-dashboard?pat_id=${data.id}&pat_name=${data.fullName}" class="dropdown-link-3 w-dropdown-link" tabindex="0">${data.fullName}</a>`})
+            )
+
+            console.log(JSON.stringify(patient_list))
+            
+        },
+        error: function(err) { 
+            console.log(err)
+        } 
+    })
+
+    // End List patients for filter
     
     
     const dateoptions = {

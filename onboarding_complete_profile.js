@@ -200,9 +200,9 @@ $(".onboard-comp-submit").click(function(event){
         return false;
     }
    
-   	const valid_date = new Date(dob)
+   	// const valid_date = new Date(dob)
    
-   	console.log(valid_date,gender,country,address,phone,email, notf)
+   	console.log(dob,gender,country,address,phone,email, notf)
    	console.log("loading....")
     
      $.ajax({url: "https://aluuka-backend.herokuapp.com",
@@ -211,7 +211,7 @@ $(".onboard-comp-submit").click(function(event){
           data: JSON.stringify({ query: `mutation ($notificationChannel: [NotificationChannel]!){
                                           onboardingCompleteProfile(
                                               fullName: "${userData.fullName}"
-                                              dob: "${valid_date}"
+                                              dob: "${dob}"
                                               gender: "${gender}"
                                               country: "${country}"
                                               address: "${address}"
