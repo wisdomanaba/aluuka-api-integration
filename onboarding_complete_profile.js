@@ -34,7 +34,7 @@ const updateFields = (image_url) => {
                                                 pictureURL: "${image_url}"
                                                 dob: "${userData.dob ? userData.dob : dob_}"
                                                 gender: "${userData.gender ? userData.gender : "male"}"
-                                                country: "${userData.country ? userData.country : ""}"
+                                                country: "${userData.country ? userData.country : "null"}"
                                                 address: "${userData.address ? userData.address : ""}"
                                                 phone: "${userData.phone ? userData.phone : ""}"
                                                 email: "${userData.email ? userData.email : ""}"
