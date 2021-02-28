@@ -3,7 +3,7 @@ $(document).ready(function(){
     const token = localStorage.getItem("token")
     const userData = JSON.parse(localStorage.getItem("data"))
     
-    var treatment_list;
+    // var treatment_list;
     
     if(!userData) {
         var loc = `${$(location).attr('origin')}/care-giver/login`
@@ -95,38 +95,31 @@ $(document).ready(function(){
             }),
             success: function(result) {
             
-            treatment_list = result.data.listTreatments.data
-            
-            var specific_treatnent =  treatment_list.filter(function(treatment) {
-                return treatment.id == patient_id
-            })
+                var spe_treatment_list = result.data.listTreatments.data
+                
+                var specific_treatment =  spe_treatment_list.filter(function(treat_) {
+                    return treat_.id == patient_id
+                })
 
-            console.log("Here", treatment_list)
-            
-            // [ {name: “Ironman”, franchise: “Marvel”}, {name: “Thor”, franchise: “Marvel”} ]
-            
-            if(Array.isArray(specific_treatnent) && !specific_treatnent.length) {
-                  //var loc = `${$(location).attr('origin')}/empty-states/empty-state-1`
-                //$(location).attr('href',loc)
+                // let bigCities = [];
+                // for (let i = 0; i < cities.length; i++) {
+                //     if (cities[i].population > 3000000) {
+                //         bigCities.push(cities[i]);
+                //     }
+                // }
+                // console.log(bigCities);
+
+                console.log("All treat", JSON.stringify(spe_treatment_list))
+
+                // treatment_list
+
+                console.log("Specific Treat", JSON.stringify(specific_treatment))
+
                 
-                $(".treatment_list_table").after(`
-                    <div class="empty-state-1-body">
-                    <div class="empty-state-1-body-elements">
-                        <img src="https://uploads-ssl.webflow.com/5fe9d2f67366097441900c56/5fe9d2f67366093bd9900ca7_Group%205302.png" loading="lazy" width="297" alt="" />
-                        <div class="emply-state-header">You have no Treatment</div>
-                        <div class="empty-state-subheader">Click to add a new Treatment</div>
-                        <a href="/care-giver/new-treatment-laboratory" class="button-medium-stretch w-button">Create Treatment</a>
-                    </div>
-                    </div>
-                `)
-                
-                  return false;
-             }
-            
-            $(".treat_num").html(`${specific_treatnent.length + 1}`)
+                $(".treat_num").html(`${specific_treatment.length + 1}`)
               
-            $(".treatment_list_table").after(
-                    $.map( specific_treatnent, function( data ) {
+                $(".treatment_list_table").after(
+                    $.map( specific_treatment, function( data ) {
                   
                         const date_treat = new Date(`${data.createdAt}`).toLocaleDateString("en-US",dateoptions)
                         console.log("Treat date",date_treat)
@@ -304,7 +297,6 @@ $(document).ready(function(){
                     alert(`${className} ${keyName}`);
                     $(`${keyName}-show`).addClass("w--open")
                 });
-                console.log(JSON.stringify(specific_treatnent))
             },
             error: function(err) { 
                 console.log(err)
@@ -314,66 +306,11 @@ $(document).ready(function(){
     }
     
 
-
-    // List patients for filter
-
-    $.ajax({
-        url: "https://aluuka-backend.herokuapp.com",
-        contentType: "application/json",
-        type:'POST',
-        headers: { 'authorization': `Bearer ${JSON.parse(token)}` },
-        data: JSON.stringify({ query: `query {
-                                    listPatients(
-                                    lastId: ""
-                                    limit: 100
-                                    ) {
-                                    data {
-                                        id
-                                        fullName
-                                        gender
-                                        country
-                                        address
-                                        phone
-                                        email
-                                        dob
-                                    }
-                                    }
-                                }
-                                `
-        }),
-        success: function(result) {
-
-            const patient_list = result.data.listPatients.data
-
-            if(Array.isArray(patient_list) && !patient_list.length) {
-                $(".patient-name-filter").append(`<a href="/care-giver/add-patient-profile" class="dropdown-link-3 w-dropdown-link" tabindex="0">Add Patient</a>`)
-                return false;
-            }
-
-            $(".patient-name-filter").append(
-                $.map( patient_list, function( data ) { return `<a href="/care-giver/treatments-main-dashboard?pat_id=${data.id}&pat_name=${data.fullName}" class="dropdown-link-3 w-dropdown-link" tabindex="0">${data.fullName}</a>`})
-            )
-
-            console.log(JSON.stringify(patient_list))
-            
-        },
-        error: function(err) { 
-            console.log(err)
-        } 
-    })
-
-    // End List patients for filter
     
-    
-    const dateoptions = {
-         year: "2-digit",
-         month:"2-digit",
-         day:"2-digit"
-    }
-    
-    // output  "12/08/18"
-    
-    // Treatment List
+        const dateoptions = { year: "2-digit", month:"2-digit", day:"2-digit" }
+        // output  "12/08/18"
+
+        // Treatment List
         $.ajax({
             url: "https://aluuka-backend.herokuapp.com",
             contentType: "application/json",
@@ -415,31 +352,26 @@ $(document).ready(function(){
             }),
             success: function(result) {
             
-            treatment_list = result.data.listTreatments.data
+                var treatment_list = result.data.listTreatments.data
             
-            console.log("Here", treatment_list)
+                if(Array.isArray(treatment_list) && !treatment_list.length) {                    
+                    $(".treatment_list_table").after(`
+                        <div class="empty-state-1-body">
+                        <div class="empty-state-1-body-elements">
+                            <img src="https://uploads-ssl.webflow.com/5fe9d2f67366097441900c56/5fe9d2f67366093bd9900ca7_Group%205302.png" loading="lazy" width="297" alt="" />
+                            <div class="emply-state-header">You have no Treatment</div>
+                            <div class="empty-state-subheader">Click to add a new Treatment</div>
+                            <a href="/care-giver/new-treatment-laboratory" class="button-medium-stretch w-button">Create Treatment</a>
+                        </div>
+                        </div>
+                    `)
+                    
+                    return false;
+                }
             
-            if(Array.isArray(treatment_list) && !treatment_list.length) {
-                  //var loc = `${$(location).attr('origin')}/empty-states/empty-state-1`
-                //$(location).attr('href',loc)
-                
-                $(".treatment_list_table").after(`
-                    <div class="empty-state-1-body">
-                    <div class="empty-state-1-body-elements">
-                        <img src="https://uploads-ssl.webflow.com/5fe9d2f67366097441900c56/5fe9d2f67366093bd9900ca7_Group%205302.png" loading="lazy" width="297" alt="" />
-                        <div class="emply-state-header">You have no Treatment</div>
-                        <div class="empty-state-subheader">Click to add a new Treatment</div>
-                        <a href="/care-giver/new-treatment-laboratory" class="button-medium-stretch w-button">Create Treatment</a>
-                    </div>
-                    </div>
-                `)
-                
-                  return false;
-             }
-            
-            $(".treat_num").html(`${treatment_list.length + 1}`)
+                $(".treat_num").html(`${treatment_list.length + 1}`)
               
-            $(".treatment_list_table").after(
+                $(".treatment_list_table").after(
                     $.map( treatment_list, function( data ) {
                   
                         const date_treat = new Date(`${data.createdAt}`).toLocaleDateString("en-US",dateoptions)
@@ -609,7 +541,6 @@ $(document).ready(function(){
                                     <a href="#" class="treatments-dashboard-table-row-4-button w-button">PENDING</a>
                                 </div>
                             </div>`
-              
                     })
                 )
                 $('.w-dropdown').on('click', '.dropdown-toggle-4', function () {
@@ -617,12 +548,61 @@ $(document).ready(function(){
                     var keyName = $(this).attr("key");
                     alert(`${className} ${keyName}`);
                     $(`${keyName}-show`).addClass("w--open")
-                });
+                })
                 console.log(JSON.stringify(treatment_list))
             },
             error: function(err) { 
                 console.log(err)
             } 
         })
+
+
+        // List patients for filter
+        $.ajax({
+            url: "https://aluuka-backend.herokuapp.com",
+            contentType: "application/json",
+            type:'POST',
+            headers: { 'authorization': `Bearer ${JSON.parse(token)}` },
+            data: JSON.stringify({ query: `query {
+                                        listPatients(
+                                        lastId: ""
+                                        limit: 100
+                                        ) {
+                                        data {
+                                            id
+                                            fullName
+                                            gender
+                                            country
+                                            address
+                                            phone
+                                            email
+                                            dob
+                                        }
+                                        }
+                                    }
+                                    `
+            }),
+            success: function(result) {
+
+                const patient_list = result.data.listPatients.data
+
+                if(Array.isArray(patient_list) && !patient_list.length) {
+                    $(".patient-name-filter").append(`<a href="/care-giver/add-patient-profile" class="dropdown-link-3 w-dropdown-link" tabindex="0">Add Patient</a>`)
+                    return false;
+                }
+
+                $(".patient-name-filter").append(
+                    $.map( patient_list, function( data ) { return `<a href="/care-giver/treatments-main-dashboard?pat_id=${data.id}&pat_name=${data.fullName}" class="dropdown-link-3 w-dropdown-link" tabindex="0">${data.fullName}</a>`})
+                )
+
+                console.log(JSON.stringify(patient_list))
+                
+            },
+            error: function(err) { 
+                console.log(err)
+            } 
+        })
+
+        // End List patients for filter
     
 })
