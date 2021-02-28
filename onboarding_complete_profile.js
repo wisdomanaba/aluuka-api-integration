@@ -219,7 +219,7 @@ $(".onboard-comp-submit").click(function(event){
     }
    
    
-   	console.log(valid_date,gender,country,address,phone,email, notf)
+   	console.log(valid_date,gender,country,address,phone,notf)
    	console.log("loading....")
     
      $.ajax({url: "https://aluuka-backend.herokuapp.com",
