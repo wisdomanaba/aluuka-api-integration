@@ -61,6 +61,8 @@ $(".create-patient-submit").click(function(event){
         setTimeout(function(){  errorMessage.css("display", "none") }, 2000)
         return false;
     }
+
+    const valid_date = new Date(dob)
    
    		console.log(fullName,valid_date,gender,country,address,phone,email,consent)
    		console.log("loading....")
@@ -71,7 +73,7 @@ $(".create-patient-submit").click(function(event){
           data: JSON.stringify({ query: `mutation {
                                           createPatient(
                                               fullName: "${fullName}"
-                                              dob: "${dob}"
+                                              dob: "${valid_date}"
                                               gender: "${gender}"
                                               country: "${country}"
                                               address: "${address}"

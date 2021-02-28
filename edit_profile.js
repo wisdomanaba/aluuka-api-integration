@@ -129,9 +129,7 @@ if(userData.notificationChannel.includes("phone")) {
 	$('#notfphone').attr('checked', true)
 }
 
-$(".create_patient_dob").click(function(){
-    $(this).prop('type', 'date');
-})
+$(".create_patient_dob").attr("type","date")
 // Edit Profile
 $(".onboard-comp-submit").click(function(event){
 	event.preventDefault()
@@ -175,9 +173,21 @@ $(".onboard-comp-submit").click(function(event){
         return false;
     }
 
+    const valid_date = new Date(dob)
+    var CurrentDate = new Date();
+
+    if(valid_date > CurrentDate){
+        $(".create-patient-submit").val("Proceed")
+        errorMessage.css("display", "block")
+        errorMessage.css("background", "#c62828")
+        errorMessage.html("Invalid date of birth....")
+        errorMessage.animate({ top: "30px" }, 900, "linear", function() { console.log("All is cool") })
+        errorMessage.animate({ top: "50px" }, 900, "linear", function() { console.log("All is cool") })
+        setTimeout(function(){  errorMessage.css("display", "none") }, 2000)
+        return false;
+    }
+
     $(".onboard-comp-submit").html("Please wait....")
-   
-   	const valid_date = new Date(dob)
 
    	console.log(dob)
    	console.log(fullName,valid_date,gender,country,address,phone,email,notf)

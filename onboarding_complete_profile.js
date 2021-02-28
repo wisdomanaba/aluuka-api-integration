@@ -154,6 +154,11 @@ $("#notfphone").click(function(event){
 $(".onboarding_complete_fullname").attr('disabled','disabled')
 $(".onboarding_complete_fullname").val(userData.fullName)
 
+
+$(".onboarding_complete_email").attr('disabled','disabled')
+$(".onboarding_complete_email").val(userData.email)
+
+
 $(".onboarding_complete_dob").attr("type","date")
 // Complete Profile
 $(".onboard-comp-submit").click(function(event){
@@ -164,13 +169,12 @@ $(".onboard-comp-submit").click(function(event){
     const country = $("select.onboarding_complete_country option").filter(":selected").val()
     const address = $(".onboarding_complete_address").val()
     const phone = $(".onboarding_complete_phone").val()
-    const email = $(".onboarding_complete_email").val()
 
     $(".onboard-comp-submit").val("Please wait....")
     
     console.log("main trial", notf)
     
-    if (dob === "" || gender === "" || country === "" || address === "" || phone === "" || email === "") {   
+    if (dob === "" || gender === "" || country === "" || address === "" || phone === "") {   
         $(".onboard-comp-submit").val("Next: Patient Information")
         errorMessage.css("display", "block")
         errorMessage.css("background", "#c62828")
@@ -199,10 +203,23 @@ $(".onboard-comp-submit").click(function(event){
         setTimeout(function(){  errorMessage.css("display", "none") }, 2000)
         return false;
     }
+
+    const valid_date = new Date(dob)
+    var CurrentDate = new Date();
+
+    if(valid_date > CurrentDate){
+        $(".create-patient-submit").val("Proceed")
+        errorMessage.css("display", "block")
+        errorMessage.css("background", "#c62828")
+        errorMessage.html("Invalid date of birth....")
+        errorMessage.animate({ top: "30px" }, 900, "linear", function() { console.log("All is cool") })
+        errorMessage.animate({ top: "50px" }, 900, "linear", function() { console.log("All is cool") })
+        setTimeout(function(){  errorMessage.css("display", "none") }, 2000)
+        return false;
+    }
    
-   	// const valid_date = new Date(dob)
    
-   	console.log(dob,gender,country,address,phone,email, notf)
+   	console.log(valid_date,gender,country,address,phone,email, notf)
    	console.log("loading....")
     
      $.ajax({url: "https://aluuka-backend.herokuapp.com",
@@ -211,7 +228,7 @@ $(".onboard-comp-submit").click(function(event){
           data: JSON.stringify({ query: `mutation ($notificationChannel: [NotificationChannel]!){
                                           onboardingCompleteProfile(
                                               fullName: "${userData.fullName}"
-                                              dob: "${dob}"
+                                              dob: "${valid_date}"
                                               gender: "${gender}"
                                               country: "${country}"
                                               address: "${address}"

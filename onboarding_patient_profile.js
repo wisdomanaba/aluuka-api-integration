@@ -64,6 +64,20 @@ $(".create-patient-submit").click(function(event){
         return false;
     }
 
+    const valid_date = new Date(dob)
+    var CurrentDate = new Date();
+
+    if(valid_date > CurrentDate){
+        $(".create-patient-submit").val("Proceed")
+        errorMessage.css("display", "block")
+        errorMessage.css("background", "#c62828")
+        errorMessage.html("Invalid date of birth....")
+        errorMessage.animate({ top: "30px" }, 900, "linear", function() { console.log("All is cool") })
+        errorMessage.animate({ top: "50px" }, 900, "linear", function() { console.log("All is cool") })
+        setTimeout(function(){  errorMessage.css("display", "none") }, 2000)
+        return false;
+    }
+
    
    	console.log(fullName,dob,gender,country,address,phone,email,consent)
    	console.log("loading....")
@@ -76,7 +90,7 @@ $(".create-patient-submit").click(function(event){
           data: JSON.stringify({ query: `mutation {
                                           createPatient(
                                               fullName: "${fullName}"
-                                              dob: "${dob}"
+                                              dob: "${valid_date}"
                                               gender: "${gender}"
                                               country: "${country}"
                                               address: "${address}"
@@ -169,8 +183,21 @@ $(".button-plain-icon").click(function(event){
         return false;
     }
 
+    const valid_date = new Date(dob)
+    var CurrentDate = new Date();
+
+    if(valid_date > CurrentDate){
+        $(".button-plain-icon .heading-5-alt").text("Add patient")
+        errorMessage.css("display", "block")
+        errorMessage.css("background", "#c62828")
+        errorMessage.html("Invalid date of birth....")
+        errorMessage.animate({ top: "30px" }, 900, "linear", function() { console.log("All is cool") })
+        errorMessage.animate({ top: "50px" }, 900, "linear", function() { console.log("All is cool") })
+        setTimeout(function(){  errorMessage.css("display", "none") }, 2000)
+        return false;
+    }
    
-   	console.log(fullName,dob,gender,country,address,phone,email,consent)
+   	console.log(fullName,valid_date,gender,country,address,phone,email,consent)
    	console.log("loading....")
     
     
@@ -181,7 +208,7 @@ $(".button-plain-icon").click(function(event){
           data: JSON.stringify({ query: `mutation {
                                           createPatient(
                                               fullName: "${fullName}"
-                                              dob: "${dob}"
+                                              dob: "${valid_date}"
                                               gender: "${gender}"
                                               country: "${country}"
                                               address: "${address}"

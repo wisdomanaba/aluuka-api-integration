@@ -102,6 +102,7 @@ $.ajax({
 })
 
 
+$(".edit_patient_profile_dob").attr("type","date")
 
 $(".edit-patient-btn").click(function(event){
 	event.preventDefault()
@@ -130,11 +131,22 @@ $(".edit-patient-btn").click(function(event){
         return false;
     }
 
+    const valid_date = new Date(dob)
+    var CurrentDate = new Date();
+
+    if(valid_date > CurrentDate){
+        $(".create-patient-submit").val("Proceed")
+        errorMessage.css("display", "block")
+        errorMessage.css("background", "#c62828")
+        errorMessage.html("Invalid date of birth....")
+        errorMessage.animate({ top: "30px" }, 900, "linear", function() { console.log("All is cool") })
+        errorMessage.animate({ top: "50px" }, 900, "linear", function() { console.log("All is cool") })
+        setTimeout(function(){  errorMessage.css("display", "none") }, 2000)
+        return false;
+    }
+
     $(".edit-patient-btn").html("Please wait....")
     $(".edit-patient-btn").text("Please wait....")
-
-   
-   	const valid_date = new Date(dob)
 
    	console.log(dob)
    	console.log("loading....")
