@@ -97,9 +97,15 @@ $(document).ready(function(){
             
             treatment_list = result.data.listTreatments.data
             
+            var specific_treatnent =  treatment_list.filter(function(treatment) {
+                return treatment.id == patient_id
+            })
+
             console.log("Here", treatment_list)
             
-            if(Array.isArray(treatment_list) && !treatment_list.length) {
+            // [ {name: “Ironman”, franchise: “Marvel”}, {name: “Thor”, franchise: “Marvel”} ]
+            
+            if(Array.isArray(specific_treatnent) && !specific_treatnent.length) {
                   //var loc = `${$(location).attr('origin')}/empty-states/empty-state-1`
                 //$(location).attr('href',loc)
                 
@@ -117,10 +123,10 @@ $(document).ready(function(){
                   return false;
              }
             
-            $(".treat_num").html(`${treatment_list.length + 1}`)
+            $(".treat_num").html(`${specific_treatnent.length + 1}`)
               
             $(".treatment_list_table").after(
-                    $.map( treatment_list, function( data ) {
+                    $.map( specific_treatnent, function( data ) {
                   
                         const date_treat = new Date(`${data.createdAt}`).toLocaleDateString("en-US",dateoptions)
                         console.log("Treat date",date_treat)
@@ -298,7 +304,7 @@ $(document).ready(function(){
                     alert(`${className} ${keyName}`);
                     $(`${keyName}-show`).addClass("w--open")
                 });
-                console.log(JSON.stringify(treatment_list))
+                console.log(JSON.stringify(specific_treatnent))
             },
             error: function(err) { 
                 console.log(err)
