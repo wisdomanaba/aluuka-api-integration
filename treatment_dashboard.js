@@ -649,10 +649,10 @@ $(document).ready(function(){
                                                                 <nav class="dropdown-list-3 w-dropdown-list ${data.id}-show" id="w-dropdown-list-10" aria-labelledby="w-dropdown-toggle-10">
                                                                     <div class="div-block-143">
                                                                         <a href="#" class="table-dropdown-link-3 w-dropdown-link" tabindex="0">Treatment</a>
-                                                                        <div class="table-dropdown-link-3-sub">$1400</div>
+                                                                        <div class="table-dropdown-link-3-sub">$${data.subTotal}</div>
                                                                     </div>
                                                                     ${$.map( data.treatmentItems, function( treat_data ) { 
-                                                                        `<div class="div-block-143">
+                                                                        return `<div class="div-block-143">
                                                                             <a href="#" class="table-dropdown-link-3-plain w-dropdown-link" tabindex="0">${treat_data.name}</a>
                                                                             <div class="table-dropdown-link-3-plain-sub">$${treat_data.price}.00</div>
                                                                         </div>
@@ -689,10 +689,10 @@ $(document).ready(function(){
                                                     <nav class="dropdown-list-3 w-dropdown-list ${data.id}-show" id="w-dropdown-list-10" aria-labelledby="w-dropdown-toggle-10">
                                                         <div class="div-block-143">
                                                             <a href="#" class="table-dropdown-link-3 w-dropdown-link" tabindex="0">Treatment</a>
-                                                            <div class="table-dropdown-link-3-sub">$1400</div>
+                                                            <div class="table-dropdown-link-3-sub">$${data.subTotal}</div>
                                                         </div>
                                                         ${$.map( data.treatmentItems, function( treat_data ) { 
-                                                            `<div class="div-block-143">
+                                                            return `<div class="div-block-143">
                                                                 <a href="#" class="table-dropdown-link-3-plain w-dropdown-link" tabindex="0">${treat_data.name}</a>
                                                                 <div class="table-dropdown-link-3-plain-sub">$${treat_data.price}.00</div>
                                                             </div>
@@ -729,10 +729,10 @@ $(document).ready(function(){
                                                         <nav class="dropdown-list-3 w-dropdown-list ${data.id}-show" id="w-dropdown-list-10" aria-labelledby="w-dropdown-toggle-10">
                                                             <div class="div-block-143">
                                                                 <a href="#" class="table-dropdown-link-3 w-dropdown-link" tabindex="0">Treatment</a>
-                                                                <div class="table-dropdown-link-3-sub">$1400</div>
+                                                                <div class="table-dropdown-link-3-sub">$${data.subTotal}</div>
                                                             </div>
                                                             ${$.map( data.treatmentItems, function( treat_data ) { 
-                                                                `<div class="div-block-143">
+                                                                return `<div class="div-block-143">
                                                                     <a href="#" class="table-dropdown-link-3-plain w-dropdown-link" tabindex="0">${treat_data.name}</a>
                                                                     <div class="table-dropdown-link-3-plain-sub">$${treat_data.price}.00</div>
                                                                 </div>
@@ -769,13 +769,13 @@ $(document).ready(function(){
                                         <nav class="dropdown-list-3 w-dropdown-list ${data.id}-show" id="w-dropdown-list-10" aria-labelledby="w-dropdown-toggle-10">
                                             <div class="div-block-143">
                                                 <a href="#" class="table-dropdown-link-3 w-dropdown-link" tabindex="0">Treatment</a>
-                                                <div class="table-dropdown-link-3-sub">$1400</div>
+                                                <div class="table-dropdown-link-3-sub">$${data.subTotal}</div>
                                             </div>
                                             ${$.map( data.treatmentItems, function( treat_data ) { 
-                                                `<div class="div-block-143">
-                                                    <a href="#" class="table-dropdown-link-3-plain w-dropdown-link" tabindex="0">${treat_data.name}</a>
-                                                    <div class="table-dropdown-link-3-plain-sub">$${treat_data.price}.00</div>
-                                                </div>
+                                                return `<div class="div-block-143">
+                                                        <a href="#" class="table-dropdown-link-3-plain w-dropdown-link" tabindex="0">${treat_data.name}</a>
+                                                        <div class="table-dropdown-link-3-plain-sub">$${treat_data.price}.00</div>
+                                                    </div>
                                                 `
                                             })}
                                         </nav>
@@ -794,7 +794,9 @@ $(document).ready(function(){
                     var className = $(this).attr("class");   
                     var keyName = $(this).attr("key");
                     alert(`${className} ${keyName}`);
-                    $(`${keyName}-show`).addClass("w--open")
+                    $(`.${keyName}-show`).addClass("w--open")
+
+                    // subTotal
                 })
                 console.log(JSON.stringify(treatment_list))
             },
