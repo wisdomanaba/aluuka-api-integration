@@ -65,7 +65,7 @@ const updateFields = (image_url) => {
                 errorMessage.animate({ top: "30px" }, 900, "linear", function() { console.log("All is cool") })
                 errorMessage.animate({ top: "50px" }, 900, "linear", function() { console.log("All is cool") })
                 setTimeout(function(){  errorMessage.css("display", "none") }, 2000)
-                $("mpe-button-replace-image").text("Replace Image")
+                $(".mpe-button-replace-image").text("Replace Image")
                 return false;
             } else {
                 errorMessage.css("display", "block")
@@ -75,8 +75,8 @@ const updateFields = (image_url) => {
                 errorMessage.animate({ top: "50px" }, 900, "linear", function() { console.log("All is cool") })
                 setTimeout(function(){  errorMessage.css("display", "none") }, 2000)
                 localStorage.setItem('data', JSON.stringify(result.data.onboardingCompleteProfile.data))
-                $("mpe-button-replace-image").text("Replace Image")
-                $(location).reload(true)
+                $(".mpe-button-replace-image").text("Replace Image")
+                window.location.reload()
             }
         },
         error: function(err) { console.log("err:",err) }
@@ -95,7 +95,7 @@ $('#change_img').change(function(e) {
         return false
     }
     console.log("Files name", fileName)
-    $("mpe-button-replace-image").text("Please wait..")
+    $(".mpe-button-replace-image").text("Please wait..")
     const data = new FormData()
     data.append("file",fileName)
     data.append("upload_preset","s0qhad82")
@@ -109,7 +109,7 @@ $('#change_img').change(function(e) {
     })
     .catch(err=>{
         console.log("Upload error", err)
-        $("mpe-button-replace-image").text("Replace Image")
+        $(".mpe-button-replace-image").text("Replace Image")
     })
 
 })
@@ -142,7 +142,6 @@ $(".onboard-comp-submit").click(function(event){
     const email = $(".onboarding_complete_email").val()
     var notf = []
 
-    
 
     if($("#notfemail").prop('checked')) {
     	console.log("Yeah, you check email")
@@ -159,7 +158,6 @@ $(".onboard-comp-submit").click(function(event){
     
     
     if (fullName === "" || dob === "" || gender === "" || country === "" || address === "" || phone === "" || email === "") {   
-        $(".onboard-comp-submit").html("Next: Patient Information")
         errorMessage.css("display", "block")
         errorMessage.css("background", "#c62828")
         errorMessage.html("Pls fill in all field....")
@@ -231,7 +229,7 @@ $(".onboard-comp-submit").click(function(event){
                   setTimeout(function(){  errorMessage.css("display", "none") }, 2000)
                   localStorage.setItem('data', JSON.stringify(result.data.onboardingCompleteProfile.data))
                   var loc = `${$(location).attr('origin')}/care-giver/treatments-main-dashboard`
-                  $(location).attr('href',loc)
+                  window.location.reload()
               }
               console.log(JSON.stringify(result.data))
           },

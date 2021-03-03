@@ -793,7 +793,6 @@ $(document).ready(function(){
                 $('.w-dropdown').on('click', '.dropdown-toggle-4', function () {
                     var className = $(this).attr("class");   
                     var keyName = $(this).attr("key");
-                    alert(`${className} ${keyName}`);
                     $(`.${keyName}-show`).addClass("w--open")
 
                     // subTotal
